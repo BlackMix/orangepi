@@ -1,6 +1,7 @@
-FROM ubuntu:21.04
+FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get -y install \
+RUN sed -Ei 's/\w+.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
+    && apt-get update && apt-get -y install \
        joe \
        software-properties-common \
        gnupg \
@@ -45,7 +46,7 @@ RUN apt-get update \
        f2fs-tools \
        fakeroot \
        flex \
-       g++-8-arm-linux-gnueabihf \
+       g++-arm-linux-gnueabihf \
        gawk \
        gcc-arm-linux-gnueabihf \
        gcc-arm-linux-gnueabi \
@@ -120,8 +121,7 @@ RUN sed -i 's/\(^STATDOPTS=\).*/\1"--port 32765 --outgoing-port 32766"/' /etc/de
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8' TERM=screen
 WORKDIR /root/orangepi
-LABEL org.opencontainers.image.source="https://github.com/orangepi-xunlong/orangepi-build/blob/main/external/config/templates/Dockerfile" \
- 
+LABEL org.opencontainers.image.source="https://github.com/orangepi-xunlong/orangepi-build/blob/main/external/config/templates/Dockerfile" \ 
     org.opencontainers.image.authors="Igor Pecovnik" \
     org.opencontainers.image.licenses="GPL-2.0"
 ENTRYPOINT [ "/bin/bash", "/root/orangepi/build.sh" ]

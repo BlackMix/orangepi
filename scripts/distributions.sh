@@ -448,6 +448,7 @@ POST_INSTALL_KERNEL_DEBS
 	cp "${EXTER}"/packages/blobs/splash/logo.bmp "${SDCARD}"/boot/logo.bmp
 
 	# copy audio.wav and mute.wav
+	mkdir -p "${SDCARD}"/usr/share/sounds/alsa/
 	cp "${EXTER}"/packages/blobs/audio_wav/audio.wav "${SDCARD}"/usr/share/sounds/alsa/
 	cp "${EXTER}"/packages/blobs/audio_wav/mute.wav "${SDCARD}"/usr/share/sounds/alsa/
 
