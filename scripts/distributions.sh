@@ -425,6 +425,7 @@ POST_INSTALL_KERNEL_DEBS
 	# add orangepi user
 	chroot "${SDCARD}" /bin/bash -c "adduser --quiet --disabled-password --shell /bin/bash --home /home/${OPI_USERNAME} --gecos ${OPI_USERNAME} ${OPI_USERNAME}"
 	chroot "${SDCARD}" /bin/bash -c "(echo ${OPI_PWD};echo ${OPI_PWD};) | passwd "${OPI_USERNAME}" >/dev/null 2>&1"
+	echo -e "${OPI_USERNAME} ALL=(ALL) NOPASSWD:ALL" >> ${SDCARD}/etc/sudoers.d/90-cloudimg
 	for additionalgroup in sudo netdev audio video disk tty users games dialout plugdev input bluetooth systemd-journal ssh; do
 	        chroot "${SDCARD}" /bin/bash -c "usermod -aG ${additionalgroup} ${OPI_USERNAME} 2>/dev/null"
 	done
@@ -435,7 +436,6 @@ POST_INSTALL_KERNEL_DEBS
 	# set up profile sync daemon on desktop systems
 	chroot "${SDCARD}" /bin/bash -c "which psd >/dev/null 2>&1"
 	if [ $? -eq 0 ]; then
-		echo -e "${OPI_USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/psd-overlay-helper" >> ${SDCARD}/etc/sudoers
 		touch ${SDCARD}/home/${OPI_USERNAME}/.activate_psd
 		chroot "${SDCARD}" /bin/bash -c "chown $OPI_USERNAME:$OPI_USERNAME /home/${OPI_USERNAME}/.activate_psd"
 	fi

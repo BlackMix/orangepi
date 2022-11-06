@@ -31,6 +31,7 @@ mkimage.sh
 !external/packages/bsp/common/etc/kernel
 !external/packages/bsp/rk3588/etc/kernel
 
+external/cache/ccache
 external/cache/.gpg
 external/cache/hash
 external/cache/rootfs

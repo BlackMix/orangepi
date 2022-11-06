@@ -170,17 +170,17 @@ create_sources_list()
 	case $release in
 	stretch|buster)
 	cat <<-EOF > "${basedir}"/etc/apt/sources.list
-	deb http://${DEBIAN_MIRROR} $release main contrib non-free
-	#deb-src http://${DEBIAN_MIRROR} $release main contrib non-free
+	deb https://${DEBIAN_MIRROR} $release main contrib non-free
+	#deb-src https://${DEBIAN_MIRROR} $release main contrib non-free
 
-	deb http://${DEBIAN_MIRROR} ${release}-updates main contrib non-free
-	#deb-src http://${DEBIAN_MIRROR} ${release}-updates main contrib non-free
+	deb https://${DEBIAN_MIRROR} ${release}-updates main contrib non-free
+	#deb-src https://${DEBIAN_MIRROR} ${release}-updates main contrib non-free
 
-	deb http://${DEBIAN_MIRROR} ${release}-backports main contrib non-free
-	#deb-src http://${DEBIAN_MIRROR} ${release}-backports main contrib non-free
+	deb https://${DEBIAN_MIRROR} ${release}-backports main contrib non-free
+	#deb-src https://${DEBIAN_MIRROR} ${release}-backports main contrib non-free
 
-	deb http://${DEBIAN_SECURTY} ${release}/updates main contrib non-free
-	#deb-src http://${DEBIAN_SECURTY} ${release}/updates main contrib non-free
+	deb https://${DEBIAN_SECURTY} ${release}/updates main contrib non-free
+	#deb-src https://${DEBIAN_SECURTY} ${release}/updates main contrib non-free
 	EOF
 	;;
 
@@ -228,17 +228,17 @@ create_sources_list()
 
 	xenial|bionic|focal|hirsute|impish|jammy)
 	cat <<-EOF > "${basedir}"/etc/apt/sources.list
-	deb http://${UBUNTU_MIRROR} $release main restricted universe multiverse
-	#deb-src http://${UBUNTU_MIRROR} $release main restricted universe multiverse
+	deb https://${UBUNTU_MIRROR} $release main restricted universe multiverse
+	#deb-src https://${UBUNTU_MIRROR} $release main restricted universe multiverse
 
-	deb http://${UBUNTU_MIRROR} ${release}-security main restricted universe multiverse
-	#deb-src http://${UBUNTU_MIRROR} ${release}-security main restricted universe multiverse
+	deb https://${UBUNTU_MIRROR} ${release}-security main restricted universe multiverse
+	#deb-src https://${UBUNTU_MIRROR} ${release}-security main restricted universe multiverse
 
-	deb http://${UBUNTU_MIRROR} ${release}-updates main restricted universe multiverse
-	#deb-src http://${UBUNTU_MIRROR} ${release}-updates main restricted universe multiverse
+	deb https://${UBUNTU_MIRROR} ${release}-updates main restricted universe multiverse
+	#deb-src https://${UBUNTU_MIRROR} ${release}-updates main restricted universe multiverse
 
-	deb http://${UBUNTU_MIRROR} ${release}-backports main restricted universe multiverse
-	#deb-src http://${UBUNTU_MIRROR} ${release}-backports main restricted universe multiverse
+	deb https://${UBUNTU_MIRROR} ${release}-backports main restricted universe multiverse
+	#deb-src https://${UBUNTU_MIRROR} ${release}-backports main restricted universe multiverse
 	EOF
 	;;
 
@@ -279,13 +279,13 @@ create_sources_list()
 	#if [[ $DOWNLOAD_MIRROR == "china" ]]; then
 	#	echo "deb https://mirrors.tuna.tsinghua.edu.cn/armbian $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
 	#elif [[ $DOWNLOAD_MIRROR == "bfsu" ]]; then
-	#    echo "deb http://mirrors.bfsu.edu.cn/armbian $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
+	#    echo "deb https://mirrors.bfsu.edu.cn/armbian $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
 	#else
-	#	echo "deb http://"$([[ $BETA == yes ]] && echo "beta" || echo "apt" )".armbian.com $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
+	#	echo "deb https://"$([[ $BETA == yes ]] && echo "beta" || echo "apt" )".armbian.com $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
 	#fi
 
 	# replace local package server if defined. Suitable for development
-	#[[ -n $LOCAL_MIRROR ]] && echo "deb http://$LOCAL_MIRROR $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
+	#[[ -n $LOCAL_MIRROR ]] && echo "deb https://$LOCAL_MIRROR $RELEASE main ${RELEASE}-utils ${RELEASE}-desktop" > "${SDCARD}"/etc/apt/sources.list.d/armbian.list
 
 	#display_alert "Adding Armbian repository and authentication key" "/etc/apt/sources.list.d/armbian.list" "info"
 	#cp "${EXTER}"/config/armbian.key "${SDCARD}"

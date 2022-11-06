@@ -792,8 +792,7 @@ compile_orangepi-config()
 	Architecture: all
 	Maintainer: $MAINTAINER <$MAINTAINERMAIL>
 	Replaces: orangepi-bsp
-	Depends: bash, iperf3, psmisc, curl, bc, expect, dialog, pv, \
-	debconf-utils, unzip, build-essential, html2text, apt-transport-https, html2text, dirmngr, software-properties-common
+	Depends: bash, iperf3, iperf3, curl, expect, dialog, pv, unzip
 	Recommends: orangepi-bsp
 	Suggests: libpam-google-authenticator, qrencode, network-manager, sunxi-tools
 	Section: utils
