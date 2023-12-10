@@ -1,0 +1,89 @@
+# build.sh docker BRANCH=next BOARD=orangepizero3 BUILD_OPT=kernel MEM_TYPE=Others KERNEL_CONFIGURE=yes CLEAN_LEVEL=oldcache
+
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["*"]
+
+jobs:
+  kernel:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board:
+        - orangepizero2
+        - orangepizero3
+        - orangepi3-lts
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Cache debs
+      id: cache-debs
+      uses: actions/cache@v4
+      with:
+        path: output/debs
+        key: debs-${{ matrix.board }}
+    - name: Cache toolchain
+      id: cache-toolchain
+      if: steps.cache-debs.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      with:
+        path: toolchains
+        key: toolchains
+        restore-keys: toolchains
+    - name: Build u-boot
+      if: steps.cache-debs.outputs.cache-hit != 'true'
+      run: ./build.sh BRANCH=next BOARD=${{ matrix.board }} BUILD_OPT=u-boot MEM_TYPE=Others CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us
+    - name: Build kernel
+      if: steps.cache-debs.outputs.cache-hit != 'true'
+      run: ./build.sh BRANCH=next BOARD=${{ matrix.board }} BUILD_OPT=kernel MEM_TYPE=Others KERNEL_CONFIGURE=no CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us
+    - name: Upload Assets
+      if: steps.cache-debs.outputs.cache-hit != 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: debs-${{ matrix.board }}
+        path: |
+          output/debs/linux-*.deb
+          output/debs/u-boot/*.deb     
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [ kernel ]
+    strategy:
+      matrix:
+        distro:
+        - bullseye
+        - bookworm
+        board:
+        - orangepizero2
+        - orangepizero3
+        - orangepi3-lts
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Cache toolchain
+      id: cache-toolchain
+      uses: actions/cache@v4
+      with:
+        path: toolchains
+        key: toolchains
+        restore-keys: |
+          toolchains
+    - name: Cache debs
+      id: cache-debs
+      uses: actions/cache@v4
+      with:
+        path: output/debs
+        key: debs-${{ matrix.board }}
+    - name: Build Server image
+      run: $PWD/build.sh BRANCH=next BOARD=${{ matrix.board }} RELEASE=${{ matrix.distro }} BUILD_OPT=image MEM_TYPE=Others BETA=yes ARMHF_ARCH=skip COMPRESS_OUTPUTIMAGE=gz KERNEL_CONFIGURE=no BUILD_DESKTOP=no PACKAGE_LIST_RM=orangepi-zsh CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us
+    - name: Build Desktop image
+      run: $PWD/build.sh BRANCH=next BOARD=${{ matrix.board }} RELEASE=${{ matrix.distro }} BUILD_OPT=image MEM_TYPE=Others BETA=yes ARMHF_ARCH=skip COMPRESS_OUTPUTIMAGE=gz KERNEL_CONFIGURE=no BUILD_DESKTOP=yes PACKAGE_LIST_RM=orangepi-zsh CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us DESKTOP_ENVIRONMENT=xfce DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base DESKTOP_APPGROUPS_SELECTED=3dsupport
+    - name: Upload images
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: next
+        files: output/images/*/*.img.gz
+            
