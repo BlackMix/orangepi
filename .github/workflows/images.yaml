@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         board:
-        - orangepizero2
+        #- orangepizero2
         - orangepizero3
-        - orangepi3-lts
+        #- orangepi3-lts
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -54,12 +54,12 @@ jobs:
     strategy:
       matrix:
         distro:
-        - bullseye
+        #- bullseye
         - bookworm
         board:
-        - orangepizero2
+        #- orangepizero2
         - orangepizero3
-        - orangepi3-lts
+        #- orangepi3-lts
     steps:
     - name: Checkout
       uses: actions/checkout@v4
