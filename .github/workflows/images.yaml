@@ -79,8 +79,6 @@ jobs:
         key: debs-${{ matrix.board }}
     - name: Build Server image
       run: $PWD/build.sh BRANCH=next BOARD=${{ matrix.board }} RELEASE=${{ matrix.distro }} BUILD_OPT=image MEM_TYPE=Others BETA=yes ARMHF_ARCH=skip COMPRESS_OUTPUTIMAGE=gz KERNEL_CONFIGURE=no BUILD_DESKTOP=no PACKAGE_LIST_RM=orangepi-zsh CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us
-    - name: Build Desktop image
-      run: $PWD/build.sh BRANCH=next BOARD=${{ matrix.board }} RELEASE=${{ matrix.distro }} BUILD_OPT=image MEM_TYPE=Others BETA=yes ARMHF_ARCH=skip COMPRESS_OUTPUTIMAGE=gz KERNEL_CONFIGURE=no BUILD_DESKTOP=yes PACKAGE_LIST_RM=orangepi-zsh CLEAN_LEVEL=oldcache DOWNLOAD_MIRROR=us DESKTOP_ENVIRONMENT=xfce DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base DESKTOP_APPGROUPS_SELECTED=3dsupport
     - name: Upload images
       uses: softprops/action-gh-release@v1
       with:
